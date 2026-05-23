@@ -1,5 +1,20 @@
 require('dotenv').config();
+const mysql = require('mysql2/promise');
 const pool = require('../config/db');
+
+async function ensureDatabaseExists(dbName) {
+  const bootstrap = await mysql.createConnection({
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '3306', 10),
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASS || process.env.DB_PASSWORD || '',
+  });
+  await bootstrap.query(
+    `CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
+  );
+  await bootstrap.end();
+  console.log(`✓ Database "${dbName}" siap`);
+}
 
 const migrations = [
   `CREATE TABLE IF NOT EXISTS users (
@@ -60,8 +75,14 @@ const migrations = [
 ];
 
 async function migrate() {
+  const dbName = process.env.DB_NAME || 'silapor';
+  await ensureDatabaseExists(dbName);
+
   const conn = await pool.getConnection();
   try {
+    await conn.query(`USE \`${dbName}\``);
+    console.log(`✓ Menggunakan database: ${dbName}`);
+
     for (const sql of migrations) {
       await conn.query(sql);
       console.log('✓ Migration executed');
@@ -77,6 +98,10 @@ async function migrate() {
       );
       console.log('✓ Default admin created (admin@silapor.kopo / admin123)');
     }
+    const [tables] = await conn.query('SHOW TABLES');
+    console.log('\n📋 Tabel yang dibuat:');
+    tables.forEach((t) => console.log('   -', Object.values(t)[0]));
+
     console.log('\n✅ Database migration completed!');
   } catch (err) {
     console.error('Migration failed:', err.message);
