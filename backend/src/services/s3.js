@@ -11,7 +11,7 @@ const s3Client = new S3Client({
   },
 });
 
-const BUCKET = process.env.S3_BUCKET_NAME || 'silapor-kopo-uploads';
+const BUCKET = process.env.S3_BUCKET || process.env.S3_BUCKET_NAME || 'silapor-storage-yudha';
 
 async function uploadToS3(file, folder = 'uploads') {
   const ext = path.extname(file.originalname);

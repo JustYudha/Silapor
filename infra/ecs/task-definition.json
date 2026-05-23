@@ -9,7 +9,7 @@
   "containerDefinitions": [
     {
       "name": "silapor-backend",
-      "image": "ACCOUNT_ID.dkr.ecr.ap-southeast-1.amazonaws.com/silapor-backend:latest",
+      "image": "ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/silapor-backend:latest",
       "essential": true,
       "portMappings": [
         {
@@ -20,21 +20,27 @@
       "environment": [
         { "name": "NODE_ENV", "value": "production" },
         { "name": "PORT", "value": "5000" },
-        { "name": "AWS_REGION", "value": "ap-southeast-1" }
+        { "name": "AWS_REGION", "value": "us-east-1" },
+        { "name": "DB_NAME", "value": "silapor-db" },
+        { "name": "DB_PORT", "value": "3306" },
+        { "name": "S3_BUCKET", "value": "silapor-storage-yudha" },
+        { "name": "CLOUDFRONT_URL", "value": "https://ik.imagekit.io/udin21/" }
       ],
       "secrets": [
-        { "name": "DB_HOST", "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:ACCOUNT_ID:secret:silapor/db:host::" },
-        { "name": "DB_USER", "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:ACCOUNT_ID:secret:silapor/db:user::" },
-        { "name": "DB_PASSWORD", "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:ACCOUNT_ID:secret:silapor/db:password::" },
-        { "name": "JWT_SECRET", "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:ACCOUNT_ID:secret:silapor/jwt::" },
-        { "name": "IMAGEKIT_PUBLIC_KEY", "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:ACCOUNT_ID:secret:silapor/imagekit:public_key::" },
-        { "name": "IMAGEKIT_PRIVATE_KEY", "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:ACCOUNT_ID:secret:silapor/imagekit:private_key::" }
+        { "name": "DB_HOST", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/db:host::" },
+        { "name": "DB_USER", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/db:user::" },
+        { "name": "DB_PASS", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/db:password::" },
+        { "name": "JWT_SECRET", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/jwt::" },
+        { "name": "AWS_ACCESS_KEY_ID", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/aws:access_key_id::" },
+        { "name": "AWS_SECRET_ACCESS_KEY", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/aws:secret_access_key::" },
+        { "name": "IMAGEKIT_PUBLIC_KEY", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/imagekit:public_key::" },
+        { "name": "IMAGEKIT_PRIVATE_KEY", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/imagekit:private_key::" }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/silapor-kopo",
-          "awslogs-region": "ap-southeast-1",
+          "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "backend"
         }
       },
@@ -48,7 +54,7 @@
     },
     {
       "name": "silapor-frontend",
-      "image": "ACCOUNT_ID.dkr.ecr.ap-southeast-1.amazonaws.com/silapor-frontend:latest",
+      "image": "ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/silapor-frontend:latest",
       "essential": true,
       "portMappings": [
         {
@@ -66,7 +72,7 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/silapor-kopo",
-          "awslogs-region": "ap-southeast-1",
+          "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "frontend"
         }
       }

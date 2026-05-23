@@ -1,5 +1,5 @@
 require('dotenv').config();
-const pool = require('./connection');
+const pool = require('../config/db');
 
 const migrations = [
   `CREATE TABLE IF NOT EXISTS users (

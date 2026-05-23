@@ -37,6 +37,7 @@ services:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_USER: silapor
+      DB_PASS: silapor123
       DB_PASSWORD: silapor123
       DB_NAME: silapor_kopo
       JWT_SECRET: dev-secret-silapor-kopo-change-me

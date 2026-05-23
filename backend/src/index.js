@@ -5,6 +5,8 @@ const cors = require('cors');
 const multer = require('multer');
 const { useLocalStorage, UPLOAD_DIR } = require('./services/storage');
 
+const { testConnection } = require('./config/db');
+
 const authRoutes = require('./routes/auth');
 const pengajuanRoutes = require('./routes/pengajuan');
 const pengaduanRoutes = require('./routes/pengaduan');
@@ -54,12 +56,22 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🏛️  SiLapor Kopo API running on port ${PORT}`);
-  console.log(`📍 Sistem Pelayanan Publik Cibolerang`);
-  if (useLocalStorage()) {
-    console.log(`📁 Upload mode: LOKAL (folder uploads/) — tanpa AWS S3`);
-  }
+async function startServer() {
+  await testConnection();
+
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🏛️  SiLapor Kopo API running on port ${PORT}`);
+    console.log(`📍 Sistem Pelayanan Publik Cibolerang`);
+    console.log(`🗄️  DB Host: ${process.env.DB_HOST || 'localhost'}`);
+    if (useLocalStorage()) {
+      console.log(`📁 Upload mode: LOKAL (folder uploads/) — tanpa AWS S3`);
+    }
+  });
+}
+
+startServer().catch((err) => {
+  console.error('Gagal memulai server:', err);
+  process.exit(1);
 });
 
 module.exports = app;
