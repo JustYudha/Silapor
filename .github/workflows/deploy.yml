@@ -7,7 +7,7 @@ on:
     branches: [main, master]
 
 env:
-  AWS_REGION: ap-southeast-1
+  AWS_REGION: us-east-1
   ECR_BACKEND_REPO: silapor-backend
   ECR_FRONTEND_REPO: silapor-frontend
   ECS_CLUSTER: silapor-kopo-cluster
