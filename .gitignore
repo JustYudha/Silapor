@@ -1,0 +1,14 @@
+node_modules/
+backend/uploads/*
+!backend/uploads/.gitkeep
+dist/
+build/
+.env
+.env.local
+*.log
+.DS_Store
+Thumbs.db
+coverage/
+.vscode/
+.idea/
+mysql_data/

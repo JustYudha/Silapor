@@ -1,0 +1,66 @@
+# Docker Compose v2 — tidak perlu baris "version"
+name: silapor
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: silapor-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: silapor_kopo
+      MYSQL_USER: silapor
+      MYSQL_PASSWORD: silapor123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: silapor-backend:local
+    container_name: silapor-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: silapor
+      DB_PASSWORD: silapor123
+      DB_NAME: silapor_kopo
+      JWT_SECRET: dev-secret-silapor-kopo-change-me
+      JWT_EXPIRES_IN: 7d
+      FRONTEND_URL: http://localhost
+      AWS_REGION: ap-southeast-1
+      S3_BUCKET_NAME: silapor-kopo-uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: /api
+    image: silapor-frontend:local
+    container_name: silapor-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

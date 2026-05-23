@@ -1,0 +1,16 @@
+{
+  "name": "silapor-kopo",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "migrate": "npm run migrate --prefix backend",
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "compose": "powershell -ExecutionPolicy Bypass -File scripts/compose.ps1",
+    "compose:down": "powershell -ExecutionPolicy Bypass -File scripts/compose.ps1 -Command \"down\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
