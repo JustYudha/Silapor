@@ -25,7 +25,7 @@ async function saveLocal(file, folder) {
   const relPath = `${folder}/${filename}`;
   const fullPath = path.join(UPLOAD_DIR, relPath);
   fs.writeFileSync(fullPath, file.buffer);
-  const baseUrl = process.env.API_BASE_URL || `http://localhost:${process.env.PORT || 5000}`;
+  const baseUrl = process.env.API_BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
   return {
     key: relPath,
     url: `${baseUrl}/uploads/${relPath.replace(/\\/g, '/')}`,

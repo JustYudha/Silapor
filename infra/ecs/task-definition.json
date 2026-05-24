@@ -13,13 +13,14 @@
       "essential": true,
       "portMappings": [
         {
-          "containerPort": 5000,
+          "containerPort": 3000,
+          "hostPort": 3000,
           "protocol": "tcp"
         }
       ],
       "environment": [
         { "name": "NODE_ENV", "value": "production" },
-        { "name": "PORT", "value": "5000" },
+        { "name": "PORT", "value": "3000" },
         { "name": "AWS_REGION", "value": "us-east-1" },
         { "name": "DB_NAME", "value": "silapor" },
         { "name": "DB_PORT", "value": "3306" },
@@ -32,9 +33,7 @@
         { "name": "DB_PASS", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/db:password::" },
         { "name": "JWT_SECRET", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/jwt::" },
         { "name": "AWS_ACCESS_KEY_ID", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/aws:access_key_id::" },
-        { "name": "AWS_SECRET_ACCESS_KEY", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/aws:secret_access_key::" },
-        { "name": "IMAGEKIT_PUBLIC_KEY", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/imagekit:public_key::" },
-        { "name": "IMAGEKIT_PRIVATE_KEY", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/imagekit:private_key::" }
+        { "name": "AWS_SECRET_ACCESS_KEY", "valueFrom": "arn:aws:secretsmanager:us-east-1:ACCOUNT_ID:secret:silapor/aws:secret_access_key::" }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
@@ -45,36 +44,11 @@
         }
       },
       "healthCheck": {
-        "command": ["CMD-SHELL", "wget -qO- http://localhost:5000/api/health || exit 1"],
+        "command": ["CMD-SHELL", "wget -qO- http://localhost:3000/api/health || exit 1"],
         "interval": 30,
         "timeout": 5,
         "retries": 3,
         "startPeriod": 60
-      }
-    },
-    {
-      "name": "silapor-frontend",
-      "image": "ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/silapor-frontend:latest",
-      "essential": true,
-      "portMappings": [
-        {
-          "containerPort": 80,
-          "protocol": "tcp"
-        }
-      ],
-      "dependsOn": [
-        {
-          "containerName": "silapor-backend",
-          "condition": "HEALTHY"
-        }
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/silapor-kopo",
-          "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "frontend"
-        }
       }
     }
   ]

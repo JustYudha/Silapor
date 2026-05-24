@@ -30,8 +30,8 @@ jobs:
           ECR_REPOSITORY: silapor-backend
           IMAGE_TAG: latest
         run: |
-          # Dockerfile backend ada di folder ./backend (bukan root project)
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./backend
+          # Web + API satu image, listen port 3000
+          docker build -f backend/Dockerfile.prod -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Force Deployment to AWS ECS Service
