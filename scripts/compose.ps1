@@ -23,9 +23,8 @@ if (-not $runner) {
     Write-Host ""
     Write-Host "Pilih salah satu:" -ForegroundColor Yellow
     Write-Host "  1. Install Podman Desktop: https://podman-desktop.io" -ForegroundColor White
-    Write-Host "  2. Docker di WSL2: lihat docs/DOCKER-TANPA-DESKTOP.md" -ForegroundColor White
-    Write-Host "  3. Dev tanpa container: npm run dev (Laragon) — lihat docs/LARAGON.md" -ForegroundColor White
-    Write-Host "  4. Bukti Docker via GitHub: push repo, cek Actions workflow docker-build.yml" -ForegroundColor White
+    Write-Host "  2. Dev tanpa container: npm run dev" -ForegroundColor White
+    Write-Host "  3. Bukti Docker via GitHub: push repo, cek Actions workflow docker-build.yml" -ForegroundColor White
     exit 1
 }
 

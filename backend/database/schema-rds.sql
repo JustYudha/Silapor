@@ -1,13 +1,14 @@
 -- ============================================================
--- SiLapor Kopo — SEMUA TABEL + AKUN ADMIN
--- Database: silapor | RDS Query Editor / HeidiSQL
+-- SiLapor Kopo — SEMUA TABEL (sesuai ECS: DB_NAME=silapor-db)
+-- Jalankan di: RDS Query Editor / HeidiSQL / DBeaver
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS `silapor`
+CREATE DATABASE IF NOT EXISTS `silapor-db`
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE `silapor`;
+USE `silapor-db`;
 
+-- 1. users — login masyarakat & admin
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nik VARCHAR(16) UNIQUE,
@@ -22,6 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+-- 2. pengajuan_surat — pengajuan surat online
 CREATE TABLE IF NOT EXISTS pengajuan_surat (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nomor_tracking VARCHAR(20) UNIQUE NOT NULL,
@@ -36,6 +38,7 @@ CREATE TABLE IF NOT EXISTS pengajuan_surat (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- 3. pengaduan — pengaduan masyarakat
 CREATE TABLE IF NOT EXISTS pengaduan (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nomor_tracking VARCHAR(20) UNIQUE NOT NULL,
@@ -52,6 +55,7 @@ CREATE TABLE IF NOT EXISTS pengaduan (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- 4. status_log — tracking riwayat status
 CREATE TABLE IF NOT EXISTS status_log (
   id INT AUTO_INCREMENT PRIMARY KEY,
   referensi_type ENUM('pengajuan', 'pengaduan') NOT NULL,
@@ -64,8 +68,12 @@ CREATE TABLE IF NOT EXISTS status_log (
   FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+-- Admin default — password: admin123
 INSERT INTO users (nama, email, password, role, no_hp)
 SELECT 'Admin Kelurahan Kopo', 'admin@silapor.kopo',
   '$2a$10$VyioEGs9J2C8OYEDR2RneubAvS3tnr5bpfM/rbKJVpySOdepQHdtm',
   'admin', '081234567890'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@silapor.kopo');
+
+SHOW TABLES;
+SELECT id, nama, email, role FROM users;

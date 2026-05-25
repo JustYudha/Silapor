@@ -2,14 +2,6 @@
 
 **Sistem Pelayanan Publik Cibolerang** — Platform digital kelurahan untuk pengajuan surat online, pengaduan masyarakat, dan tracking status layanan.
 
-## Quick start
-
-| Situasi | Panduan |
-|---------|---------|
-| Pakai **Laragon**, coding harian | [docs/LARAGON.md](docs/LARAGON.md) |
-| Tugas butuh **Docker**, tanpa Docker Desktop | [docs/DOCKER-TANPA-DESKTOP.md](docs/DOCKER-TANPA-DESKTOP.md) |
-| Docker Desktop error 500 | Pakai **Podman** atau **WSL2 Docker** (bukan Desktop) |
-
 | Komponen      | Teknologi        |
 | ------------- | ---------------- |
 | Frontend      | React (Vite)     |
@@ -40,15 +32,7 @@ Silapor/
 └── docker-compose.yml
 ```
 
-## Laragon + Docker untuk tugas (ringkas)
-
-- **Harian:** Laragon MySQL + `npm run dev` → [docs/LARAGON.md](docs/LARAGON.md)
-- **Bukti Docker:** `.\scripts\compose.ps1` (Podman/Docker) **atau** push GitHub → workflow `docker-build.yml`
-- **Laporan:** arsitektur Docker → ECR → ECS tetap dari file `Dockerfile` & `infra/ecs/`
-
----
-
-## Menjalankan Lokal (Tanpa Docker) — **Laragon / XAMPP**
+## Menjalankan Lokal
 
 **Syarat:** Node.js 20+ dan MySQL (XAMPP / Laragon / MySQL Installer)
 
