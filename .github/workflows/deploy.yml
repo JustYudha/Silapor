@@ -39,7 +39,7 @@ jobs:
       - name: Force Deployment to ECS
         run: |
           aws ecs update-service \
-            --cluster silapor-cluster \
-            --service silapor-backend-service \
+            --cluster silapor-cluster-1111 \
+            --service silapor-task-1111-service-0o3oxfni \
             --force-new-deployment \
             --region us-east-1
